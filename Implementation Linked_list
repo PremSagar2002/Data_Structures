@@ -1,16 +1,18 @@
-
+//linked list implementation
 #include<stdio.h>
 #include<stdlib.h>
-struct node{
-    int data;
-    struct node *next;
+struct node
+{
+	int data;
+	struct node *next;
 };
-void main()
+
+    struct node *head=NULL;
+struct node *create(void)
 {
    struct node *head,*newnode,*temp;
    head=NULL;
-   int choice=1,count=0;
-   int n,i,j;
+   int n,i;
    printf("Enter how many nodes do you want to enter: ");
    scanf("%d",&n);
    for(i=0;i<n;i++)
@@ -19,25 +21,239 @@ void main()
        printf("Enter the data for the node %d: ",i+1);
        scanf("%d",&newnode->data);
        newnode->next=NULL;
-       if(head==NULL){
+       if(head==NULL)
+	   {
            head=temp=newnode;
        }
-       else{
+       else
+	   {
            temp->next=newnode;
            temp=newnode;
-           
        }
-       /*printf("Do you want to continue: press 0 t0 exit and 1 to continue: ");
-       scanf("%d",&choice);*/
+
    }
-   //printing the elements of a linked list;
-   //temp=head;
-   for(temp=head;temp!=NULL;temp=temp->next)
+      return head;
+}
+
+void display(struct node *head)
+{
+	struct node *temp;
+	temp=head;
+	while(temp!=0)
+	{
+		printf("%d\n",temp->data);
+		temp=temp->next;
+	}
+	
+}
+
+void length(struct node *head)
+{
+	int count=0;
+	struct node *temp;
+	temp=head;
+	while(temp!=NULL)
+	{
+		temp=temp->next;
+		count++;
+	}
+	printf("The number of elements in the linked list is: %d\n",count);
+	
+}
+
+void search(struct node *head)
+{
+	int num;
+	int i=0;
+	int flag;
+	struct node *temp;
+	printf("Enter the number do you want to search\n");
+	scanf("%d",&num);
+	temp=head;
+	while(temp!=NULL)
+	{
+		if(temp->data==num)
+		{
+			printf("The element is found at %d\n",i+1);
+			flag=0;
+		}
+		else
+		{
+			flag=1;
+			i++;
+		}
+		temp=temp->next;
+	}
+	   if(flag==1){
+	   
+	   printf("Search is not successful\n");
+                 }
+	   return;
+}
+
+void reverse(struct node *head)
+{
+	struct node *prevnode,*currentnode,*nextnode;
+	prevnode=NULL;
+	currentnode=nextnode=head;
+	while(nextnode!=NULL)
+	{
+		nextnode=nextnode->next;
+		currentnode->next=prevnode;
+		prevnode=currentnode;
+		currentnode=nextnode;
+	}
+	head=prevnode;
+	printf("The list after reversing is:\n");
+	display(head);
+}
+
+void sort(struct node *head)
+{
+	struct node *i,*j,*temp1;
+	int temp;
+	temp1=head;
+	for(i=temp1;i->next!=NULL;i=i->next)
+	{
+		for(j=i->next;j!=NULL;j=j->next)
+		{
+			if(i->data>j->data)
+			{
+				temp=i->data;
+				i->data=j->data;
+				j->data=temp;
+			}
+		}
+	}
+	
+	printf("after sorting the linked list:\n ");
+	display(head);
+}
+
+ struct node *insertBeg(struct node *head)
+{
+	struct node *newnode;
+    newnode=(struct node *)malloc(sizeof(struct node));
+    printf("Enter the data:");
+    scanf("%d",&newnode->data);
+    newnode->next=head;
+    head=newnode;
+
+     printf("after insert at beg\n");
+     display(head);
+}
+
+struct node *insertEnd(struct node *head)
+{
+	struct node *newnode,*temp;
+	newnode=(struct node *)malloc(sizeof(struct node));
+    printf("Enter the data:");
+    scanf("%d",&newnode->data);
+    newnode->next=NULL;
+    temp=head;
+    while((temp->next)!=NULL){
+        temp=temp->next;
+    }
+    temp->next=newnode;
+    
+    return head;
+
+}
+
+struct node *insertPos(struct node *head)
+{
+	struct node *temp,*newnode;
+	int pos;
+   int k=1;
+   printf("\nEnter the position to insert the node");
+   scanf("%d",&pos);
+   temp=head;
+   while(k<pos)
    {
-       printf("%d\n",temp->data);
-       //temp=temp->next;
-       count++;
-       
+       temp=temp->next;
+       k++;
    }
-   printf("THE LENGHN OF LINKED LIST IS:%d",count);
+   newnode=(struct node *)malloc(sizeof(struct node));
+    printf("Enter the data:");
+    scanf("%d",&newnode->data);
+    newnode->next=temp->next;
+    temp->next=newnode;
+
+     printf("after insert at specific position\n");
+     display(head);
+}
+
+int main()
+{
+	int choice,c;
+	do
+	{
+		printf("1.create a linkedlist:\n ");
+		printf("2.display a linkedlist:\n");
+		printf("3.Length of the linkedlist:\n ");
+		printf("4.searching the linkedlist\n");
+		printf("5.Reversing the Linkedlist:\n");
+		printf("6.sorting the linked list\n");
+		printf("7.insert a node at begining\n");
+		printf("8.insert a node at ending\n");
+		printf("9.insert at specific positon\n");
+		printf("Enter the choice: \n");
+		scanf("%d",&choice);
+		switch(choice)
+		{
+			case 1:
+				head=create();
+				printf("Linked List is successfully created\n");
+				break;
+			case 2:
+				display(head);
+			    printf("Displaying a LinkedList is successfull:\n");
+				break;
+			case 3:
+				length(head);
+			    printf("Length of the list is successfully printed\n");
+				break;
+			case 4:
+				search(head);
+			    //printf("Searching element is success\n");
+				break;
+			case 5:
+				reverse(head);
+			    printf("Reversing the Linked list is successful\n");
+				break;
+			case 6:
+				sort(head);
+			    printf("Sorting the element is finished\n");
+				break;
+			case 7:
+				head=insertBeg(head);
+			     printf("iNsertion is completed\n");
+			     printf("after insert at beg\n");
+                 display(head);
+			     break;
+			case 8:
+				head=insertEnd(head);
+				printf("iNsertion is completed\n");
+				printf("after insert at end\n");
+                display(head);
+				break;
+				
+			case 9:
+				head=insertPos(head);
+			    printf("iNsertion is completed\n");
+			    printf("insert at the specific position\n");
+                display(head);
+			    break;
+				
+						
+					
+			default:
+			    printf("please enter the valid option");
+							
+		}
+		printf("Enter 0 to exit and any number to continue \n");
+		scanf("%d",&c);
+	}
+	while(c);
+	return 0;
 }
